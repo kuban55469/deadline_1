@@ -1,0 +1,55 @@
+-- #1 Display only car’s brands & car’s models & car’s price. Отображать только марки автомобилей и модели автомобилей и цену автомобиля
+SELECT brand,model,price FROM cars;
+
+-- #2 Display quantity of all cars. Показать количество всех автомобилей
+SELECT count(*)  FROM cars;
+
+-- #3 Display all cars where brand is Hyundai; Показать все автомобили марки Hyundai
+SELECT brand, model,price FROM cars WHERE brand='Hyundai';
+
+-- #4 Display all Red and Blue cars; Показать все красные и синие автомобили
+SELECT brand, color FROM cars WHERE color='Red' or color='Blue';
+
+-- #5 Display all cars where issued year between 2000 and 2010; Показать все автомобили, выпущенные с 2000 по 2010 год
+SELECT * FROM cars WHERE year_of_issue BETWEEN INT '2000' AND INT '2010';
+
+-- #6 Display quantity of cars where car’s brand is Chevrolet; Показать количество автомобилей марки Chevrolet
+SELECT count(brand)FROM cars WHERE brand='Chevrolet';
+
+-- #7 Display the average year of manufacture of cars; Отображение среднего года выпуска автомобилей
+SELECT avg(year_of_issue) FROM cars;
+
+-- #8 Display the cars where brand equals to Audi, Toyota, Kia and Ford; Вывести все автомобили брендов Audi, Toyota, Kia и Ford
+SELECT * FROM cars WHERE brand='Audi' OR brand='Toyota' OR brand='Kia' OR brand='Ford';
+
+-- #9 Display cars where car’s model starts with ‘T’; Показать автомобили, где модель автомобиля начинается с «Т»
+SELECT brand, model FROM cars WHERE model ILIKE 'T%';
+
+-- #10 Display cars where car’s model end with ‘e’; Показать автомобили, где модель автомобиля заканчивается на «е»;
+SELECT brand, model FROM cars WHERE model ILIKE '%e';
+
+-- #11 Display brands where contains only 5 symbols; Показать бренды, содержащие только 5 символов;
+SELECT brand, model FROM cars WHERE brand LIKE '_____';
+
+-- #12 Display all amounts where car’s brand is Mercedes-Benz; Показать общую сумму всех автомобилей марки Mercedes-Benz
+SELECT sum(price) FROM cars WHERE brand='Mercedes-Benz';
+
+-- #13 Display the most expensive car & the cheepest car; Показать самую дорогую и самую дешевую машину
+SELECT max(price)FROM cars;
+SELECT min(price)FROM cars;
+
+-- #14 Display all cars where car’s brand not TOYOTA; Показать все автомобили, где марка автомобиля не TOYOTA
+SELECT brand, model FROM cars WHERE brand NOT IN ('Toyota');
+SELECT brand, model FROM cars WHERE brand IN ('Toyota');
+
+-- #15 Display 10 the most expensive cars; Показать 10 самых дорогих автомобилей;
+SELECT * FROM cars ORDER BY price DESC LIMIT 10;
+
+-- #16 Display the newest cars between 5th to 15th; Отображение новейших автомобилей с 5-го по 15-е.
+SELECT * FROM cars ORDER BY year_of_issue DESC LIMIT 15 OFFSET 5;
+
+-- #17 Display cars where car’s year of issue not between 1995 and 2005; Вывести все автомобили, кроме тех автомобилей которые выпустились между 1995 и 2005;
+SELECT * FROM cars WHERE year_of_issue NOT BETWEEN 2005 AND 1995;
+
+-- #18 Display most cars in one color. Вывести автомобилей одного цвета и наибольшего количества
+SELECT count(*) FROM cars where color = 'RED'
