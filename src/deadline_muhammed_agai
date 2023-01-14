@@ -1,0 +1,176 @@
+1. Баардык продукталарды(Products) жана информацияларды чыгар.
+deadline_m=# SELECT * FROM products INNER JOIN product_info AS pi ON products.id = pi.product_id;
+ id |   name    |   description   | price | weight | id | expiration_date | country | colour | product_id
+----+-----------+-----------------+-------+--------+----+-----------------+---------+--------+------------
+  1 | Cheese    | cow milk cheese |   500 |      1 |  1 | 2024-01-01      | Talas   | yellow |          1
+  4 | Banana    | Torpical        |    70 |      1 |  2 | 2023-02-01      | BangHok | Yellow |          4
+  5 | Tea       | Inian tea       |   200 |      1 |  3 | 2026-01-01      | Mumbai  | Green  |          5
+  2 | Steac     | cow meat        |  1000 |      2 |  4 | 2025-05-01      | Naryn   | Red    |          2
+  3 | Ice Cream | milk cream      |    50 |      1 |  5 | 2023-05-01      | Kant    | Black  |          3
+(5 rows)
+
+
+2. Информациясы бар болгон продукталарды гана чыгар.
+deadline_m=# SELECT * FROM products where description IS NOT NULL;
+ id |   name    |   description   | price | weight
+----+-----------+-----------------+-------+--------
+  1 | Cheese    | cow milk cheese |   500 |      1
+  2 | Steac     | cow meat        |  1000 |      2
+  3 | Ice Cream | milk cream      |    50 |      1
+  4 | Banana    | Torpical        |    70 |      1
+  5 | Tea       | Inian tea       |   200 |      1
+
+
+3. Информациясы жок(null) болгон продукталарды чыгар.
+deadline_m=# SELECT * FROM products where description IS NULL;
+ id |   name   | description | price | weight
+----+----------+-------------+-------+--------
+  6 | Tomato   |             |   100 |      1
+  7 | Choklate |             |   100 |
+(2 rows)
+
+
+4. Баардык продукталардын атын жана срогун чыгар.
+deadline_m=# select products.name AS products, product_info.expiration_date AS dates from products
+ join product_info ON products.id = product_info.product_id;
+ products  |   dates
+-----------+------------
+ Cheese    | 2024-01-01
+ Banana    | 2023-02-01
+ Tea       | 2026-01-01
+ Steac     | 2025-05-01
+ Ice Cream | 2023-05-01
+
+
+
+5. Баардык продукталарды жана анын мамлекеттери "М" менен башталган шаарларын чыгар.
+deadline_m=# select products.name, product_info.country from products join product_info on products.id = product_info.product_id where country like 'M%';
+ name | country
+------+---------
+ Tea  | Mumbai
+
+
+
+6. Баардык кардардын(Customers) аттарын жана кардарга тийешелуу карзинанын(Basket_терин) аттарын сорттоп чыгар.(asc,desc)
+
+deadline_m=# select customers.first_name, basket.basket_name from customers join basket on customers.id = basket.customer_id;
+ first_name | basket_name
+------------+-------------
+ Kuban      | Korzina_1
+ Janysh     | Korzina_2
+ Asan       | Korzina_3
+ Asel       | Korzina_4
+ Meerim     | Korzina_5
+
+
+
+7. Кардардын аты жана кардардын продуктулары чыксын.
+
+deadline_m=# select first_name, name from customers join basket b on customers.id = b.customer_id join
+ product_basket pb on b.id = pb. basket_id join products p on pb.product_id = p.id;
+ first_name |   name
+------------+-----------
+ Kuban      | Cheese
+ Janysh     | Steac
+ Asan       | Ice Cream
+ Asel       | Banana
+ Meerim     | Tea
+
+
+
+
+8. Кардардын аты, кардар алган продуктун аты, баасы, салмагы чыксын.
+deadline_m=# select first_name, name, price, weight from customers join basket b on customers.id = b.customer_id join product_basket pb on b.id = pb.basket_id join products p on pb.product_id = p.id;
+ first_name |   name    | price | weight
+------------+-----------+-------+--------
+ Kuban      | Cheese    |   500 |      1
+ Janysh     | Steac     |  1000 |      2
+ Asan       | Ice Cream |    50 |      1
+ Asel       | Banana    |    70 |      1
+ Meerim     | Tea       |   200 |      1
+
+
+
+
+
+9. Бир кардар эки окшош продукт алган болсо, кардардын аты,
+    кардар алган продукталарынын аты уникалдуу болуп баасы жана салмагы кошулуп чыгар.
+product_basket.product_id.
+
+10.Бир өлкөдө чыккан продукталдын баарын чыгар.
+
+deadline_m=# select country, name from product_info join products pi on pi.id = product_info.product_i
+d order by product_info.country, pi.name;
+ country |   name
+---------+-----------
+ BangHok | Banana
+ Kant    | Ice Cream
+ Mumbai  | Tea
+ Naryn   | Steac
+ Talas   | Cheese
+
+
+
+11.Кардарлардын баарын жана алган продукталарынын баасынын суммасын тегеректеп (округлить) чыгар.
+
+
+12."2021" ден "2023" кө чейинки сроктогу продукталардын атын жана срокторун чыгар.
+
+
+
+13.Срогу "2022" болгон продукталардын шаарын , продукталардын атын жана баасын чыгар бирок баалары 0 болуп калсын.
+
+
+
+
+14.Баардык кардарлардын продукталарынын сумассын чыгар.
+
+deadline_m=# select sum(price) from products;
+ sum
+------
+ 2020
+
+
+15.Кардардын аты жана ал сатып алган продуктунун аты, тусу чыксын.
+
+
+16.Баардык продуктулардын салмактарын чыгар.
+deadline_m=# select weight from products;
+ weight
+--------
+      1
+      2
+      1
+      1
+      1
+      1
+
+
+17.Кардарлардын email_дары "com" менен буткон кардарлардын аттары, корзинасынын аты чыксын.
+deadline_m=# select first_name,basket_name from customers join basket b on customers.id = b.customer_id where customers.email ilike '%.com';
+ first_name | basket_name
+------------+-------------
+ Kuban      | Korzina_1
+ Janysh     | Korzina_2
+ Asan       | Korzina_3
+ Asel       | Korzina_4
+ Meerim     | Korzina_5
+(5 rows)
+
+
+
+18.Продуклардын атын, кыскача маалыматын(description), кардардын атын чыгар качан кардарлардын номери жок(null) болсо.
+
+
+19.Бардык продуктунун тустору жана тустору окшош продукталары чыксын.
+
+deadline_m=# select colour from product_info order by colour;
+ colour
+--------
+ Black
+ Green
+ Red
+ yellow
+ Yellow
+
+20.Баардык продукталардын мамлекти окшош болгон продукталардын атын жана анын кардарларын атын чыгар.
